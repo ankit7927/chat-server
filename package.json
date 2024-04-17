@@ -1,0 +1,22 @@
+{
+  "name": "linex-server",
+  "version": "1.0.0",
+  "description": "backend server of linex app",
+  "main": "main.js",
+  "scripts": {
+    "dev": ""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ankit7927/linex-server.git"
+  },
+  "author": "ankit x64-technology",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ankit7927/linex-server/issues"
+  },
+  "homepage": "https://github.com/ankit7927/linex-server#readme",
+  "dependencies": {
+    "mongoose": "^8.3.2"
+  }
+}
