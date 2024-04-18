@@ -4,7 +4,7 @@
   "description": "backend server of linex app",
   "main": "main.js",
   "scripts": {
-    "dev": ""
+    "dev": "nodemon src/main.js"
   },
   "repository": {
     "type": "git",
@@ -17,6 +17,13 @@
   },
   "homepage": "https://github.com/ankit7927/linex-server#readme",
   "dependencies": {
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.3.2"
+  },
+  "devDependencies": {
+    "morgan": "^1.10.0",
+    "nodemon": "^3.1.0"
   }
 }
