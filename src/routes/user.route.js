@@ -9,6 +9,7 @@ updateRouter.route("/username").put(userController.updateUsername);
 
 const root = express.Router();
 root.route("/get").get(authMiddleware, userController.getProfile);
+root.route("/get-contact").get(authMiddleware, userController.getContacts);
 root.use("/update", authMiddleware, updateRouter);
 root.route("/check-username").get(userController.isUsernameAvailable)
 

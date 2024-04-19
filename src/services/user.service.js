@@ -33,4 +33,8 @@ userService.isUsernameAvailable = async (username) => {
     return await userModel.find({ username }).countDocuments().lean()
 }
 
+userService.getContacts = async (userId) => {
+    return await userModel.findOne({ _id:userId }).select("contact").lean().exec()
+}
+
 module.exports = userService;

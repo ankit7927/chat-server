@@ -56,4 +56,19 @@ userController.isUsernameAvailable = async (req, res, next) => {
         next(error);
     }
 }
+
+userController.getContacts = async (req, res, next) => {
+    const userId = req.user._id;
+
+    if (!userId || !isValidObjectId(userId))
+        return res.status(404).json({ message: "all fields are required" });
+
+    try {
+        res.json(await userService.getContacts(userId));
+    } catch (error) {
+        next(error);
+    }
+}
+
 module.exports = userController;
+
