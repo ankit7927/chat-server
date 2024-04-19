@@ -29,4 +29,8 @@ userService.updateUsername = async (userId, newUsername) => {
 
 // TODO impl. update user profile image, email and password
 
+userService.isUsernameAvailable = async (username) => {
+    return await userModel.find({ username }).countDocuments().lean()
+}
+
 module.exports = userService;

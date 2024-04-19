@@ -44,4 +44,16 @@ userController.updateUsername = async (req, res, next) => {
     }
 }
 
+userController.isUsernameAvailable = async (req, res, next) => {
+    const username = req.body.username;
+
+    if (!username)
+        return res.status(404).json({ message: "all fields are required" });
+
+    try {
+        res.json(await userService.isUsernameAvailable(username));
+    } catch (error) {
+        next(error);
+    }
+}
 module.exports = userController;
