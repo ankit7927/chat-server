@@ -6,10 +6,8 @@ module.exports = authMiddlewere = (req, res, next) => {
     if (!token) return res.status(409).json({ message: "no token provided" });
 
     try {
-        const decode = verifyToken(token);
-        req.user = decode;
+        req.user = verifyToken(token);
         next();
-        
     } catch (error) {
         res.status(500).json({ message: "failed to decode token" });
     }

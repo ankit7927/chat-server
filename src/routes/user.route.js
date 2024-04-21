@@ -3,8 +3,7 @@ const userController = require("../controllers/user.controller");
 const authMiddleware = require("../middlewares/auth.middleware");
 
 const updateRouter = express.Router();
-updateRouter.route("/name").put(userController.updateName);
-updateRouter.route("/username").put(userController.updateUsername);
+updateRouter.route("/profile").put(userController.updateProfile);
 
 
 const root = express.Router();

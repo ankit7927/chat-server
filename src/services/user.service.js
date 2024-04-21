@@ -9,19 +9,10 @@ userService.getProfile = async (userId) => {
     return data;
 }
 
-userService.updateName = async (userId, newName) => {
+userService.updateProfile = async (userId, newName, newUsername) => {
     const update = await userModel.findOneAndUpdate({ _id: userId },
-        { "$set": { name: newName } }, { new: true })
-        .select("name").lean().exec()
-
-    if (update) return update;
-    else errorGen("wrong data provided", 500);
-}
-
-userService.updateUsername = async (userId, newUsername) => {
-    const update = await userModel.findOneAndUpdate({ _id: userId },
-        { "$set": { username: newUsername } }, { new: true })
-        .select("username").lean().exec()
+        { "$set": { name: newName, username: newUsername } }, { new: true })
+        .select("name username").lean().exec()
 
     if (update) return update;
     else errorGen("wrong data provided", 500);

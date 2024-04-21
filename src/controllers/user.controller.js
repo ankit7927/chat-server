@@ -16,29 +16,16 @@ userController.getProfile = async (req, res, next) => {
     }
 }
 
-userController.updateName = async (req, res, next) => {
+userController.updateProfile = async (req, res, next) => {
     const userId = req.user._id;
     const newName = req.body.name;
-
-    if (!userId || !isValidObjectId(userId) || !newName)
-        return res.status(404).json({ message: "all fields are required" });
-
-    try {
-        res.json(await userService.updateName(userId, newName));
-    } catch (error) {
-        next(error);
-    }
-}
-
-userController.updateUsername = async (req, res, next) => {
-    const userId = req.user._id;
     const newUsername = req.body.username;
 
-    if (!userId || !isValidObjectId(userId) || !newUsername)
+    if (!userId || !isValidObjectId(userId) || !newName, !newUsername)
         return res.status(404).json({ message: "all fields are required" });
 
     try {
-        res.json(await userService.updateUsername(userId, newUsername));
+        res.json(await userService.updateProfile(userId, newName, newUsername));
     } catch (error) {
         next(error);
     }
