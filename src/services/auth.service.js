@@ -16,7 +16,7 @@ authService.signin = async (email, password) => {
     if (!existingUser) errorGen("client with email is not found", 404);
 
     if (existingUser.password === password) {
-        return { token: genrateToken(existingUser._id) }
+        return { token: genrateToken(existingUser._id), _id: existingUser._id }
     } else errorGen("wrong password", 404);
 }
 
@@ -24,7 +24,7 @@ authService.signin = async (email, password) => {
 authService.signup = async (data) => {
     const newUser = await userModel.create(data);
     if (newUser) {
-        return { token: genrateToken(newUser._id) };
+        return { token: genrateToken(newUser._id), _id: existingUser._id };
     } else errorGen("something went wrong");
 }
 
