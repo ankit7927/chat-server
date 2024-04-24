@@ -24,7 +24,7 @@ authService.signin = async (email, password) => {
 authService.signup = async (data) => {
     const newUser = await userModel.create(data);
     if (newUser) {
-        return { token: genrateToken(newUser._id), _id: existingUser._id };
+        return { token: genrateToken(newUser._id), _id: newUser._id };
     } else errorGen("something went wrong");
 }
 
