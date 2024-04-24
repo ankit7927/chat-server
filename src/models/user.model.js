@@ -24,7 +24,8 @@ const userSchema = new mongoose.Schema({
     },
     password: String,
 
-    contact: [contactSchema],
+    contact: [{ type: mongoose.Schema.ObjectId, ref: "User" }],
+    contactReq: [contactSchema],
     chats: [{ type: mongoose.Schema.ObjectId, ref: "Chat" }]
 });
 
