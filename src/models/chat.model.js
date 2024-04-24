@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const messageSchema = require("./message.model");
+const messageSchema = require("./message.schema");
 
 // feature - TODO add private chat feature.
 const chatSchema = new mongoose.Schema({

@@ -57,5 +57,20 @@ userController.getContacts = async (req, res, next) => {
     }
 }
 
+// temp controller 
+userController.addContactReq = async (req, res, next) => {
+    const userId = req.user._id;
+    const toId = req.body.toId;
+
+    if (!userId || !toId || !isValidObjectId(userId) || !isValidObjectId(toId))
+        return res.status(404).json({ message: "all fields are required and must be object ids" });
+
+    try {
+        res.json(await userService.addContactReq(userId, toId));
+    } catch (error) {
+        next(error);
+    }
+}
+
 module.exports = userController;
 

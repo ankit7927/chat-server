@@ -7,6 +7,12 @@ const roles = {
     STAFF: "STAFF"
 }
 
+const contactStatus = {
+    INCOMING:"INCOMING",
+    OUTGOING:"OUTGOING",
+    CONNECTED:"CONNECTED"
+}
+
 const assetsDirCheck = () => {
     if (!fs.existsSync("assets")) fs.mkdirSync("assets")
     if (!fs.existsSync("assets/mediaMax")) fs.mkdirSync("assets/mediaMax")
@@ -20,4 +26,4 @@ const errorGen = (message, status)=>{
     throw error
 }
 
-module.exports = { assetsDirCheck, errorGen, roles }
+module.exports = { assetsDirCheck, errorGen, roles, contactStatus }
