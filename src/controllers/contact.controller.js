@@ -31,7 +31,7 @@ contactController.addContactReq = async (req, res, next) => {
     }
 }
 
-contactController.acceptContactReq = async (req, res, next) => {
+contactController.acceptRejectContactReq = async (req, res, next) => {
     const userId = req.user._id;
     const contactId = req.body.contactId;
     const action = req.body.action;
@@ -43,7 +43,7 @@ contactController.acceptContactReq = async (req, res, next) => {
         return res.status(404).json({ message: "action is not supported" });
 
     try {
-        res.json(await contactService.acceptContactReq(userId, contactId, action==="accept"));
+        res.json(await contactService.acceptRejectContactReq(userId, contactId, action==="accept"));
     } catch (error) {
         next(error);
     }
@@ -53,7 +53,7 @@ contactController.cancleContactReq = async (req, res, next) => {
     const userId = req.user._id;
     const contactId = req.body.contactId;
 
-    if (!userId || !contactId || !action || !isValidObjectId(userId) || !isValidObjectId(contactId))
+    if (!userId || !contactId || !isValidObjectId(userId) || !isValidObjectId(contactId))
         return res.status(404).json({ message: "all fields are required and must be object ids" });
 
     try {

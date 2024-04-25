@@ -39,7 +39,7 @@ contactService.addContactReq = async (userId, toId) => {
     return { message: "contact request sent" }
 }
 
-contactService.acceptContactReq = async (userId, contactId, accept) => {
+contactService.acceptRejectContactReq = async (userId, contactId, accept) => {
 
     const data = await userModel.findOne({ "contactReq._id": contactId })
         .select("contactReq").lean().exec();
@@ -107,7 +107,7 @@ contactService.cancleContactReq = async (userId, contactId) => {
             }
         });
 
-    await userModel.findByIdAndUpdate({ _id: contactReqData.from },
+    await userModel.findByIdAndUpdate({ _id: contactReqData.to },
         {
             "$pull": {
                 contactReq: {
@@ -115,6 +115,7 @@ contactService.cancleContactReq = async (userId, contactId) => {
                 }
             }
         });
+    return { message: "request cancled" }
 }
 
 module.exports = contactService;
