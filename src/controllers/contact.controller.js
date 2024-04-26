@@ -19,13 +19,13 @@ contactController.getContacts = async (req, res, next) => {
 
 contactController.addContactReq = async (req, res, next) => {
     const userId = req.user._id;
-    const toId = req.body.toId;
+    const toUsername = req.body.toUsername;
 
-    if (!userId || !toId || !isValidObjectId(userId) || !isValidObjectId(toId))
+    if (!userId || !toUsername || !isValidObjectId(userId))
         return res.status(404).json({ message: "all fields are required and must be object ids" });
 
     try {
-        res.json(await contactService.addContactReq(userId, toId));
+        res.json(await contactService.addContactReq(userId, toUsername));
     } catch (error) {
         next(error);
     }

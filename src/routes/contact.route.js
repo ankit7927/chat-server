@@ -6,7 +6,7 @@ const root = express.Router();
 root.route("/add").post(contactController.addContactReq);
 root.route("/get/:type").get(contactController.getContacts);
 root.route("/acc-rej").post(contactController.acceptRejectContactReq);
-root.route("/cancle").post(contactController.cancleContactReq);
+root.route("/cancel").post(contactController.cancleContactReq);
 
 
 module.exports = root;

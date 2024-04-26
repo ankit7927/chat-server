@@ -28,13 +28,17 @@ contactService.getContacts = async (userId, type) => {
     }
 }
 
-contactService.addContactReq = async (userId, toId) => {
+contactService.addContactReq = async (userId, toUsername) => {
 
-    await userModel.findByIdAndUpdate({ _id: toId },
-        { "$push": { contactReq: { from: userId, to: toId, status: contactStatus.INCOMING } } });
+    const toUser = await userModel.findOne({ username: toUsername }).select("username").lean().exec()
+
+    if (!toUser) errorGen("user not found, wrong username", 404);
+
+    await userModel.findByIdAndUpdate({ _id: toUser._id },
+        { "$push": { contactReq: { from: userId, to: toUser._id, status: contactStatus.INCOMING } } });
 
     await userModel.findByIdAndUpdate({ _id: userId },
-        { "$push": { contactReq: { from: userId, to: toId, status: contactStatus.OUTGOING } } });
+        { "$push": { contactReq: { from: userId, to: toUser._id, status: contactStatus.OUTGOING } } });
 
     return { message: "contact request sent" }
 }
