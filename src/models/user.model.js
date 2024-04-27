@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-const contactSchema = require("./contact.schema");
 
 /**
  * in this user model 
@@ -23,9 +22,6 @@ const userSchema = new mongoose.Schema({
         unique: true,
     },
     password: String,
-
-    contact: [{ type: mongoose.Schema.ObjectId, ref: "User" }],
-    contactReq: [contactSchema],
     chats: [{ type: mongoose.Schema.ObjectId, ref: "Chat" }]
 });
 

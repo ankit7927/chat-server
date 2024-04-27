@@ -1,6 +1,5 @@
-const contactSchema = require("../models/contact.schema");
 const userModel = require("../models/user.model");
-const { errorGen, contactStatus } = require("../utilities/common.utils");
+const { errorGen } = require("../utilities/common.utils");
 
 const userService = {};
 

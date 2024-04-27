@@ -7,10 +7,10 @@ const roles = {
     STAFF: "STAFF"
 }
 
-const contactStatus = {
-    INCOMING:"INCOMING",
-    OUTGOING:"OUTGOING",
-    CONNECTED:"CONNECTED"
+const chatType = {
+    CHAT:"CHAT",
+    GROUP:"GROUP",
+    REQUEST:"REQUEST"
 }
 
 const assetsDirCheck = () => {
@@ -26,4 +26,4 @@ const errorGen = (message, status)=>{
     throw error
 }
 
-module.exports = { assetsDirCheck, errorGen, roles, contactStatus }
+module.exports = { assetsDirCheck, errorGen, roles, chatType }
