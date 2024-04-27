@@ -21,7 +21,7 @@ userService.updateProfile = async (userId, newName, newUsername) => {
 // TODO impl. update user profile image, email and password
 
 userService.isUsernameAvailable = async (username) => {
-    return await userModel.find({ username }).countDocuments().lean()
+    return await userModel.find({ username: { "$regex": username } }).select("name username").lean()
 }
 
 
