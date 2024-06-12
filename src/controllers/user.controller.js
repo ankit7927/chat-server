@@ -3,6 +3,19 @@ const userService = require("../services/user.service");
 
 const userController = {};
 
+userController.newUser = async (req, res, next) => {
+    const data = req.body;
+
+    if (!data.name || !data.email || !data.username || !data.password) 
+        return res.status(404).json({ message: "all fileds are required" });
+    
+    try {
+        res.json(await userService.newUser(data))
+    } catch (error) {
+        next(error)
+    }
+}
+
 userController.getProfile = async (req, res, next) => {
     const userId = req.user._id;
     console.log(userId);

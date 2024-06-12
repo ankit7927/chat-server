@@ -17,17 +17,4 @@ authController.signin = async (req, res, next) => {
     }
 }
 
-authController.signup = async (req, res, next) => {
-    const data = req.body;
-
-    if (!data.name || !data.email || !data.username || !data.password) 
-        return res.status(404).json({ message: "all fileds are required" });
-    
-    try {
-        res.json(await authService.signup(data))
-    } catch (error) {
-        next(error)
-    }
-}
-
 module.exports = authController;

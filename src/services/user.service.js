@@ -1,7 +1,15 @@
 const userModel = require("../models/user.model");
 const { errorGen } = require("../utilities/common.utils");
+const { genrateToken } = require("../utilities/jwt.utils");
 
 const userService = {};
+
+userService.newUser = async (data) => {
+    const newUser = await userModel.create(data);
+    if (newUser) {
+        return { token: genrateToken(newUser._id), _id: newUser._id };
+    } else errorGen("something went wrong");
+}
 
 userService.getProfile = async (userId) => {
     const data = await userModel.findOne({ _id: userId })
