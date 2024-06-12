@@ -5,7 +5,7 @@ const userService = {};
 
 userService.getProfile = async (userId) => {
     const data = await userModel.findOne({ _id: userId })
-        .select("name username").select("-password").lean();
+        .select("name username").lean();
     return data;
 }
 
@@ -21,7 +21,7 @@ userService.updateProfile = async (userId, newName, newUsername) => {
 // TODO impl. update user profile image, email and password
 
 userService.isUsernameAvailable = async (username) => {
-    return await userModel.find({ username: { "$regex": username } }).select("name username").lean()
+    return await userModel.find({ username: { "$regex": username } }).select("name username").lean().exec()
 }
 
 
