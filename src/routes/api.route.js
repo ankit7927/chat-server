@@ -10,7 +10,7 @@ const user = express.Router()
 user.use("/update", authMiddleware, update);
 user.route("/get").get(authMiddleware, userController.getProfile);
 user.route("/check-username").post(userController.isUsernameAvailable)
-user.route("/new", userController.newUser)
+user.route("/new").post(userController.newUser)
 
 const auth = express.Router()
 auth.route("/signin").post(authController.signin);

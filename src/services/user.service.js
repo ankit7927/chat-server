@@ -13,7 +13,7 @@ userService.newUser = async (data) => {
 
 userService.getProfile = async (userId) => {
     const data = await userModel.findOne({ _id: userId })
-        .select("name username").lean();
+        .select("name username email").lean();
     return data;
 }
 
