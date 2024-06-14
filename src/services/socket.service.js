@@ -63,6 +63,28 @@ const socketService = (httpSrver) => {
         })
 
 
+        socket.on("reject-request", async (data, callback) => {
+            try {
+                if (data.to && data.from) {
+                    const user = await userModel.findOneAndUpdate({ _id: data.to },
+                        { "$pull": { "friends.incoming": data.from } }).select("name username").lean().exec()
+        
+                    const user1 = await userModel.findByIdAndUpdate({ _id: data.from },
+                        { "$pull": { "friends.outgoing": user._id } }).select("name username socketId").lean().exec()        
+
+                    socket.to(user1.socketId).emit("request-rejected", { name: user.name, username: user.username, _id: user._id });
+                    callback({ status: "success" })
+                } else {
+                    console.log("to or from cant be empty");
+                    socket.to(socket.id).emit("outgoing-request-fail", { "error": "to or from cant be empty" })
+                }
+            } catch (err) {
+                console.log(err);
+                socket.to(socket.id).emit("reject-request-fail", err)
+            }
+        })
+
+
         socket.on("disconnect", async (data) => {
             await userModel.findOneAndUpdate({ socketId: socket.id }, { "$set": { active: false, socketId: "" } })
         })
