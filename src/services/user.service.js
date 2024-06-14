@@ -32,6 +32,10 @@ userService.isUsernameAvailable = async (username) => {
     return await userModel.find({ username: { "$regex": username } }).select("name username").lean().exec()
 }
 
+userService.getFriends = async (userId) => {
+    return await userModel.findById({ _id: userId })
+        .select("friends").lean().exec()
+}
 
 
 module.exports = userService;
