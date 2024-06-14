@@ -20,23 +20,46 @@ const socketService = (httpSrver) => {
     io.on("connection", async (socket) => {
         console.log(`joined ${socket.id}`);
 
-        socket.on("send-request", async (data) => {
-            console.log(data);
-            const user = await userModel.findOneAndUpdate({ username: data.to },
-                { "$push": { "friends.incomming": data.from } }).lean().exec()
+        socket.on("send-request", async (data, callback) => {
+            try {
+                if (data.to && data.from) {
+                    const user = await userModel.findOneAndUpdate({ username: data.to },
+                        { "$push": { "friends.incoming": data.from } }).lean().exec()
 
-            const user1 = await userModel.findByIdAndUpdate({ _id: data.from },
-                { "$push": { "friends.outgoing": user._id } }).lean().exec()
+                    const user1 = await userModel.findByIdAndUpdate({ _id: data.from },
+                        { "$push": { "friends.outgoing": user._id } }).lean().exec()
 
-            socket.to(user.socketId).emit("incoming-request", { name: user1.name, username: user1.username, userId: user1._id })
-        });
+                    socket.to(user.socketId).emit("incoming-request", { name: user1.name, username: user1.username, userId: user1._id });
+                    callback({ name: user.name, username: user.username, userId: user._id })
+                } else {
+                    console.log("to or from cant be empty");
+                    socket.to(socket.id).emit("outgoing-request-fail", { "error": "to or from cant be empty" })
+                }
+            } catch (err) {
+                console.log(err);
+                socket.to(socket.id).emit("outgoing-request-fail", err)
+            }
+        },);
 
-        socket.on("cancel-request", async (data)=> {
-            const user = await userModel.findOneAndUpdate({ username: data.to },
-                { "$pull": { "friends.incomming": data.from } }).lean().exec()
+        socket.on("cancel-request", async (data, callback) => {
+            try {
+                if (data.to && data.from) {
+                    const user = await userModel.findOneAndUpdate({ _id: data.to },
+                        { "$pull": { "friends.incoming": data.from } }).lean().exec()
+        
+                    const user1 = await userModel.findByIdAndUpdate({ _id: data.from },
+                        { "$pull": { "friends.outgoing": user._id } }).lean().exec()        
 
-            const user1 = await userModel.findByIdAndUpdate({ _id: data.from },
-                { "$pull": { "friends.outgoing": user._id } }).lean().exec()
+                    socket.to(user.socketId).emit("canceled-incoming-request", { name: user1.name, username: user1.username, userId: user1._id });
+                    callback({ status: "success" })
+                } else {
+                    console.log("to or from cant be empty");
+                    socket.to(socket.id).emit("outgoing-request-fail", { "error": "to or from cant be empty" })
+                }
+            } catch (err) {
+                console.log(err);
+                socket.to(socket.id).emit("outgoing-request-fail", err)
+            }
         })
 
 
