@@ -2,7 +2,8 @@ require("dotenv").config();
 const express = require("express");
 const connectDB = require("./configs/db.config");
 const mongoose = require("mongoose");
-const cors = require("cors")
+const cors = require("cors");
+const socketService = require("./services/socket.service");
 
 const app = express();
 const port = process.env.PORT || 5000;
@@ -27,9 +28,10 @@ app.use((err, req, res, next) => {
 
 mongoose.connection.once("open", () => {
     console.log("connected to database");
-    app.listen(port, () => {
+    const httpSrver = app.listen(port, () => {
         console.log(`server started on ${port}`);
     });
+    socketService(httpSrver)
 });
 
 mongoose.connection.on("error", (error) => {

@@ -18,7 +18,7 @@ userController.newUser = async (req, res, next) => {
 
 userController.getProfile = async (req, res, next) => {
     const userId = req.user._id;
-    console.log(userId);
+    
     if (!userId || !isValidObjectId(userId))
         return res.status(404).json({ message: "userId is not a mongoid" });
 
@@ -52,6 +52,19 @@ userController.isUsernameAvailable = async (req, res, next) => {
 
     try {
         res.json(await userService.isUsernameAvailable(username));
+    } catch (error) {
+        next(error);
+    }
+}
+
+userController.getFriends = async (req, res, next) => {
+    const userId = req.user._id;
+
+    if (!userId || !isValidObjectId(userId))
+        return res.status(404).json({ message: "userId is not a mongoid" });
+
+    try {
+        res.json(await userService.getFriends(userId));
     } catch (error) {
         next(error);
     }
