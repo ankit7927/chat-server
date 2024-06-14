@@ -24,13 +24,13 @@ const socketService = (httpSrver) => {
             try {
                 if (data.to && data.from) {
                     const user = await userModel.findOneAndUpdate({ username: data.to },
-                        { "$push": { "friends.incoming": data.from } }).lean().exec()
+                        { "$push": { "friends.incoming": data.from } }).select("name username socketId").lean().exec()
 
                     const user1 = await userModel.findByIdAndUpdate({ _id: data.from },
-                        { "$push": { "friends.outgoing": user._id } }).lean().exec()
+                        { "$push": { "friends.outgoing": user._id } }).select("name username").lean().exec()
 
-                    socket.to(user.socketId).emit("incoming-request", { name: user1.name, username: user1.username, userId: user1._id });
-                    callback({ name: user.name, username: user.username, userId: user._id })
+                    socket.to(user.socketId).emit("incoming-request", { name: user1.name, username: user1.username, _id: user1._id });
+                    callback({ name: user.name, username: user.username, _id: user._id })
                 } else {
                     console.log("to or from cant be empty");
                     socket.to(socket.id).emit("outgoing-request-fail", { "error": "to or from cant be empty" })
@@ -45,12 +45,12 @@ const socketService = (httpSrver) => {
             try {
                 if (data.to && data.from) {
                     const user = await userModel.findOneAndUpdate({ _id: data.to },
-                        { "$pull": { "friends.incoming": data.from } }).lean().exec()
+                        { "$pull": { "friends.incoming": data.from } }).select("name username socketId").lean().exec()
         
                     const user1 = await userModel.findByIdAndUpdate({ _id: data.from },
-                        { "$pull": { "friends.outgoing": user._id } }).lean().exec()        
+                        { "$pull": { "friends.outgoing": user._id } }).select("name username").lean().exec()        
 
-                    socket.to(user.socketId).emit("canceled-incoming-request", { name: user1.name, username: user1.username, userId: user1._id });
+                    socket.to(user.socketId).emit("canceled-incoming-request", { name: user1.name, username: user1.username, _id: user1._id });
                     callback({ status: "success" })
                 } else {
                     console.log("to or from cant be empty");

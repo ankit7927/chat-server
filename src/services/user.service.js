@@ -35,9 +35,9 @@ userService.isUsernameAvailable = async (username) => {
 userService.getFriends = async (userId) => {
     return await userModel.findById({ _id: userId })
         .select("friends")
-        .populate("friends.friends")
-        .populate("friends.incoming")
-        .populate("friends.outgoing")
+        .populate("friends.friends", "name username")
+        .populate("friends.incoming", "name username")
+        .populate("friends.outgoing", "name username")
         .lean().exec()
 }
 
