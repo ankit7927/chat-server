@@ -1,6 +1,7 @@
 const { Server } = require("socket.io");
 const { verifyToken } = require("../utilities/jwt.utils");
 const userModel = require("../models/user.model");
+const chatModel = require("../models/chat.model");
 
 const socketService = (httpSrver) => {
     const io = new Server(httpSrver, { cors: "*" })
@@ -93,8 +94,10 @@ const socketService = (httpSrver) => {
                     const user1 = await userModel.findByIdAndUpdate({ _id: data.from },
                         { "$pull": { "friends.outgoing": user._id }, "$push": { "friends.friends": user._id } }).select("name username socketId").lean().exec()
 
-                    socket.to(user1.socketId).emit("request-accepted", { name: user.name, username: user.username, _id: user._id });
-                    callback({ status: "success" })
+                    const newChat = await chatModel.create({ name: `${user.name}-${user1.name}`, members: [user._id, user1._id] })
+
+                    socket.to(user1.socketId).emit("request-accepted", { name: user.name, username: user.username, _id: user._id, chat: newChat });
+                    callback({ status: "success", chat: newChat })
                 } else {
                     console.log("to or from cant be empty");
                     socket.to(socket.id).emit("outgoing-request-fail", { "error": "to or from cant be empty" })
