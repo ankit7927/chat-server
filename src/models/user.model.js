@@ -22,15 +22,11 @@ const userSchema = new mongoose.Schema({
         unique: true,
     },
     password: String,
-    chats: [{ type: mongoose.Schema.ObjectId, ref: "Chat" }],
+
     active: Boolean,
     socketId: String,
 
-    friends: {
-        friends: [{ type: mongoose.Schema.ObjectId, ref: "User" }],
-        incoming: [{ type: mongoose.Schema.ObjectId, ref: "User" }],
-        outgoing: [{ type: mongoose.Schema.ObjectId, ref: "User" }],
-    }
+    chats: [{ type: mongoose.Schema.ObjectId, ref: "Chat" }]
 });
 
 module.exports = mongoose.model("User", userSchema);

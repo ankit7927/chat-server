@@ -57,14 +57,40 @@ userController.isUsernameAvailable = async (req, res, next) => {
     }
 }
 
-userController.getFriends = async (req, res, next) => {
+userController.getChats = async (req, res, next) => {
     const userId = req.user._id;
 
     if (!userId || !isValidObjectId(userId))
         return res.status(404).json({ message: "userId is not a mongoid" });
 
     try {
-        res.json(await userService.getFriends(userId));
+        res.json(await userService.getChats(userId));
+    } catch (error) {
+        next(error);
+    }
+}
+
+userController.getChat = async (req, res, next) => {
+    const chatId = req.params.chatId
+
+    if (!chatId || !isValidObjectId(chatId))
+        return res.status(404).json({ message: "chatId is not a mongoid" });
+
+    try {
+        res.json(await userService.getChat(chatId));
+    } catch (error) {
+        next(error);
+    }
+}
+
+userController.getRequests = async (req, res, next) => {
+    const userId = req.user._id;
+
+    if (!userId || !isValidObjectId(userId))
+        return res.status(404).json({ message: "userId is not a mongoid" });
+
+    try {
+        res.json(await userService.getRequests(userId));
     } catch (error) {
         next(error);
     }
