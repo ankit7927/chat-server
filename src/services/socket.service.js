@@ -76,9 +76,10 @@ const socketService = (httpSrver) => {
 
         socket.on("accept-request", async (data, callback) => {
             try {
-                const fromUser = await userModel.findById({ _id: data.from._id }).lean();
+                const newChat = await chatModel.create({name:"test name", members: [data.to, data.from] })
 
-                const newChat = await chatModel.create({ name: fromUser.name, members: [data.to, data.from] })
+                const fromUser = await userModel.findByIdAndUpdate({ _id: data.from._id }, { "$push": { chats: newChat._id } }).lean();
+                await userModel.findByIdAndUpdate({ _id: data.to._id }, { "$push": { chats: newChat._id } }).lean();
 
                 await requestModel.findByIdAndDelete({ _id: data._id })
 
