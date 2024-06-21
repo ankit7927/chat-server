@@ -66,6 +66,7 @@ userController.getChats = async (req, res, next) => {
     try {
         res.json(await userService.getChats(userId));
     } catch (error) {
+        console.log(error);
         next(error);
     }
 }

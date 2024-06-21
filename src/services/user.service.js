@@ -37,21 +37,20 @@ userService.getChats = async (userId) => {
     return await userModel.findById({ _id: userId })
         .select("chats")
         .populate("chats")
+        .populate({
+            path: "chats",
+            populate: {
+                path: "members",
+                select: "name username"
+            }})
         .lean().exec()
 }
 
 
-// {
-//     path: "chats",
-//     populate: {
-//         path: "members",
-//         select: "name username"
-//     }
 userService.getChat = async (chatId) => {
     return await chatModel.findById({ _id: chatId })
         .select("-messages")
         .populate("members", "name username")
-        .populate("admins", "name username")
         .lean().exec()
 }
 
