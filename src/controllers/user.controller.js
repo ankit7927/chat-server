@@ -1,5 +1,6 @@
 const { isValidObjectId } = require("mongoose");
 const userService = require("../services/user.service");
+const { getDefaultProfilePic } = require("../utilities/common.utils");
 
 const userController = {};
 
@@ -8,6 +9,8 @@ userController.newUser = async (req, res, next) => {
 
     if (!data.name || !data.email || !data.username || !data.password) 
         return res.status(404).json({ message: "all fileds are required" });
+
+    data.profilePic = getDefaultProfilePic()
     
     try {
         res.json(await userService.newUser(data))
@@ -33,12 +36,13 @@ userController.updateProfile = async (req, res, next) => {
     const userId = req.user._id;
     const newName = req.body.name;
     const newUsername = req.body.username;
+    const profilePic = `${req.protocol}://${req.headers.host}/${req.file.path}`;
 
     if (!userId || !isValidObjectId(userId) || !newName, !newUsername)
         return res.status(404).json({ message: "all fields are required" });
 
     try {
-        res.json(await userService.updateProfile(userId, newName, newUsername));
+        res.json(await userService.updateProfile(userId, newName, newUsername, profilePic));
     } catch (error) {
         next(error);
     }

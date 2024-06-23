@@ -4,6 +4,7 @@ const connectDB = require("./configs/db.config");
 const mongoose = require("mongoose");
 const cors = require("cors");
 const socketService = require("./services/socket.service");
+const path = require("path")
 
 const app = express();
 const port = process.env.PORT || 5000;
@@ -11,6 +12,7 @@ const port = process.env.PORT || 5000;
 app.use(cors())
 app.use(express.json());
 app.use(express.urlencoded({ extended: false, }));
+app.use("/public", express.static(path.join(__dirname, '../public')))
 
 if (process.env.NODE_ENV === "dev") {
     const morgan = require("morgan");

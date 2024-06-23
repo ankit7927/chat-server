@@ -2,9 +2,10 @@ const express = require("express");
 const authController = require("../controllers/auth.controller");
 const userController = require("../controllers/user.controller");
 const authMiddleware = require("../middlewares/auth.middleware");
+const mediaMiddleware = require("../middlewares/media.middleware");
 
 const update = express.Router()
-update.route("/profile").put(userController.updateProfile);
+update.route("/profile").put(mediaMiddleware.single("profilePic"), userController.updateProfile);
 
 
 const user = express.Router()

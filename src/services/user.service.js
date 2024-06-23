@@ -14,14 +14,14 @@ userService.newUser = async (data) => {
 
 userService.getProfile = async (userId) => {
     const data = await userModel.findOne({ _id: userId })
-        .select("name username email").lean();
+        .select("name username email profilePic").lean();
     return data;
 }
 
-userService.updateProfile = async (userId, newName, newUsername) => {
-    const update = await userModel.findOneAndUpdate({ _id: userId },
-        { "$set": { name: newName, username: newUsername } }, { new: true })
-        .select("name username").lean().exec()
+userService.updateProfile = async (userId, newName, newUsername, profilePic) => {
+    const update = await userModel.findByIdAndUpdate({ _id: userId },
+        { "$set": { name: newName, username: newUsername, profilePic: profilePic } }, { new: true })
+        .select("name username profilePic").lean().exec()
 
     if (update) return update;
     else errorGen("wrong data provided", 500);
@@ -30,7 +30,7 @@ userService.updateProfile = async (userId, newName, newUsername) => {
 // TODO impl. update user profile image, email and password
 
 userService.isUsernameAvailable = async (username) => {
-    return await userModel.find({ username: { "$regex": username } }).select("name username").lean().exec()
+    return await userModel.find({ username: { "$regex": username } }).select("name username profilePic").lean().exec()
 }
 
 userService.getChats = async (userId) => {
@@ -41,7 +41,7 @@ userService.getChats = async (userId) => {
             path: "chats",
             populate: {
                 path: "members",
-                select: "name username"
+                select: "name username profilePic"
             }})
         .lean().exec()
 }
@@ -50,7 +50,7 @@ userService.getChats = async (userId) => {
 userService.getChat = async (chatId) => {
     return await chatModel.findById({ _id: chatId })
         .select("-messages")
-        .populate("members", "name username")
+        .populate("members", "name username profilePic")
         .lean().exec()
 }
 

@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
 /**
- * in this user model 
+ * in this user model
  * the user account will be created with aws cognito and
  * then profile will be created in mongoose.
  * aws - email, password
@@ -14,6 +14,7 @@ const userSchema = new mongoose.Schema({
         required: [true, "username required!"],
         unique: true,
     },
+    profilePic: String,
 
     // temp authenication field
     email: {
@@ -23,10 +24,7 @@ const userSchema = new mongoose.Schema({
     },
     password: String,
 
-    active: Boolean,
-    socketId: String,
-
-    chats: [{ type: mongoose.Schema.ObjectId, ref: "Chat" }]
+    chats: [{ type: mongoose.Schema.ObjectId, ref: "Chat" }],
 });
 
 module.exports = mongoose.model("User", userSchema);

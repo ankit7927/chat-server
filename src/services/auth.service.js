@@ -18,7 +18,7 @@ authService.signin = async (email, password) => {
 
     if (existingUser.password === password) {
         const requests = await requestModel.find({ "$or": [{ to: existingUser._id }, { from: existingUser._id }] })
-            .populate("to", "name username").populate("from", "name username").lean().exec()
+            .populate("to", "name username profilePic").populate("from", "name username profilePic").lean().exec()
         return { token: genrateToken(existingUser._id), user: { ...existingUser, password: '', requests } }
     } else errorGen("wrong password", 404);
 }

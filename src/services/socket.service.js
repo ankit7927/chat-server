@@ -3,6 +3,7 @@ const { verifyToken } = require("../utilities/jwt.utils");
 const userModel = require("../models/user.model");
 const chatModel = require("../models/chat.model");
 const requestModel = require("../models/request.model");
+const { generateChatNames } = require("../utilities/common.utils");
 
 const activeUsers = {};
 
@@ -44,8 +45,8 @@ const socketService = (httpSrver) => {
                 });
 
                 const requestData = await (
-                    await newRequest.populate("to", "name username")
-                ).populate("from", "name username");
+                    await newRequest.populate("to", "name username profilePic")
+                ).populate("from", "name username profilePic");
 
                 socket
                     .to(activeUsers[toUser._id])
@@ -122,7 +123,7 @@ const socketService = (httpSrver) => {
         socket.on("accept-request", async (data, callback) => {
             try {
                 const newChat = await chatModel.create({
-                    name: "test name",
+                    name: generateChatNames(),
                     members: [data.to, data.from],
                 });
 
