@@ -27,5 +27,6 @@ auth.route("/signin").post(authController.signin);
 const root = express.Router()
 root.use("/auth", auth);
 root.use("/user", user);
+root.get("/system-info", userController.getSystemInfo)
 
 module.exports = root;

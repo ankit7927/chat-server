@@ -101,5 +101,9 @@ userController.getRequests = async (req, res, next) => {
     }
 }
 
+userController.getSystemInfo = async (req, res, next) => {
+    return res.json(await userService.getSystemInfo());
+}
+
 module.exports = userController;
 
