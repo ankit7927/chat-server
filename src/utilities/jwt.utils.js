@@ -5,7 +5,7 @@ const secrate = process.env.JWT_SECRATE;
 const genrateToken = (id) => {
     return jwt.sign({ _id: id }, process.env.JWT_SECRATE, {
         expiresIn: "18h",
-        algorithm: "RS512",
+        algorithm: "HS256",
     });
 };
 
