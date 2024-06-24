@@ -1,5 +1,5 @@
 {
-  "name": "linex-server",
+  "name": "intune-server",
   "version": "1.2.0",
   "description": "backend server of linex app",
   "main": "main.js",
