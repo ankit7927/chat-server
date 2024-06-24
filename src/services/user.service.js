@@ -1,9 +1,7 @@
-const sysInfo = require("systeminformation");
 const chatModel = require("../models/chat.model");
 const requestModel = require("../models/request.model");
 const userModel = require("../models/user.model");
 const { errorGen } = require("../utilities/common.utils");
-const { getDiskInfo } = require("node-disk-info");
 
 const userService = {};
 
@@ -59,18 +57,6 @@ userService.getChat = async (chatId) => {
 userService.getRequests = async (userId) => {
     return await requestModel.find({ "$or": { to: userId, from: userId } }).lean().exec()
 }
-
-userService.getSystemInfo = async () => {
-    const valueObject = {
-        cpu: "brand, speed, cores",
-        mem: "total, free, used",
-        memLayout: "type, clockSpeed",
-    };
-    const data = await sysInfo.get(valueObject);
-
-    data.disk = (await getDiskInfo())[0]._capacity;
-    return data;
-};
 
 
 module.exports = userService;
